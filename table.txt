@@ -1,0 +1,11 @@
+用户表 USERS
+管理员表 ADMINISTRATOR
+简历表（可参考招聘网站简历字段）RESUME
+员工表 EMPLOYEE
+部门表 DEPT
+职位表 POST
+薪资表 SALARY
+奖惩表 RWANDPH
+招聘表 RECRUIT
+培训表 TRAIN
+考勤表 CHECK
