@@ -9,3 +9,7 @@
 招聘表 RECRUIT
 培训表 TRAIN
 考勤表 CHECK
+
+admin 管理员界面
+tourist 游客界面
+employee 员工界面

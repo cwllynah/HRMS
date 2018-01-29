@@ -2,6 +2,49 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.cwll.dao.UserMapper">
+    <select id="nameExit" parameterType="java.lang.String" resultType="com.cwll.model.User">
+        SELECT  NAME FROM USERS
+        WHERE NAME=#{name}
+    </select>
 
+    <insert id="add" parameterType="com.cwll.model.User" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" order="BEFORE"
+                   keyProperty="id">
+            SELECT SEQ_ID.nextval FROM dual
+            select CAST(RANDOM * 100000 as INTEGER) a FROM SYSTEM.SYSDUMMY1
+        </selectKey>
+        INSERT INTO  USERS(ID,NAME,PASSWORD,SEX,AGE,PHONE,EMAIL) VALUES
+        (#{id},#{name},#{password},#{sex},#{age},#{phone},#{email})
+    </insert>
+    <update id="updateById" parameterType="com.cwll.model.User">
+        UPDATE USERS SET
+        <trim prefix=" " suffix=" " suffixOverrides=",">
+            <if test="name!=null">
+                NAME=#{name},
+            </if>
+            <if test="password!=null">
+                PASSWORD=#{password},
+            </if>
+            <if test="sex!=null">
+                SEX=#{sex},
+            </if>
+            <if test="phone!=null">
+                PHONE=#{phone},
+            </if>
+            <if test="email!=null">
+                EMAIL=#{emil},
+            </if>
+            <if test="identity!=null">
+                IDENTITY=#{identity}
+            </if>
+        </trim>
+        WHERE ID=#{id}
+    </update>
+    <select id="findUser" resultType="com.cwll.model.User">
+        SELECT * FROM USERS WHERE NAME=#{name} AND PASSWORD=#{password} AND IDENTITY=#{identity}
+    </select>
+    <select id="findUserById" resultType="com.cwll.model.User">
+        SELECT * FROM USERS WHERE ID=#{userId}
+    </select>
 </mapper>

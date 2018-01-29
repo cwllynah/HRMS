@@ -2,6 +2,33 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.cwll.dao.ResumeMapper">
 
+    <insert id="addResume">
+
+    </insert>
+    <insert id="addRecruitToResume">
+
+    </insert>
+    <update id="updateResumeStateById">
+
+    </update>
+    <update id="updateResume">
+
+    </update>
+    <select id="findResumeByRecruitId" resultType="com.cwll.model.Resume">
+
+    </select>
+    <select id="selectResume" resultType="com.cwll.model.Resume">
+
+    </select>
+    <select id="finDeliverydResumes" resultType="com.cwll.model.Resume">
+
+    </select>
+    <select id="adminShowInvitationResume" resultType="com.cwll.model.Resume">
+
+    </select>
+    <select id="findResumeById" resultType="com.cwll.model.Resume">
+
+    </select>
 </mapper>
