@@ -33,7 +33,7 @@ public class ResumeController {
 
         resume.setJob(post);
         resumeService.addResume(resume);
-        return "forward:resume.do";
+        return "forward:resume";
     }
     @ResponseBody
     @RequestMapping(value = "/selectResume",method = RequestMethod.POST ,produces="application/json;charset=UTF-8")
@@ -46,7 +46,5 @@ public class ResumeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
 }

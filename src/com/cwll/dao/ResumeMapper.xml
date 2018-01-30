@@ -14,13 +14,13 @@
         <result property="interview" column="interview"/>
         <result property="createtime" column="r_createTime"/>
 
-        <!--<association property="job"  column="job" javaType="com.cwll.model.Post" >
+        <association property="job"  column="job" javaType="com.cwll.model.Post" >
         <id property="pid" column="p_id"/>
         <result property="pname" column="pname"/>
-        &lt;!&ndash;<result property="deptid" column="deptid"/>&ndash;&gt;
+        <!--<result property="deptid" column="deptid"/>-->
         <result property="describe" column="describe"/>
         <result property="createtime" column="p_createTime"/>
-    </association>-->
+    </association>
     <association property="userid"  column="userid" javaType="com.cwll.model.User" >
         <id property="id" column="u_id"/>
         <result property="name" column="u_name"/>
