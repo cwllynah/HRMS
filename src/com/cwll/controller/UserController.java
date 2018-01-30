@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
 
-    @RequestMapping(value = "/register.cwll",method = RequestMethod.POST)
+    @RequestMapping(value = "register",method = RequestMethod.POST)
     public  String registerUser(User user, ModelMap modelMap, BindingResult bindingResult){
         boolean b = userService.register(user);
         if(b){
@@ -32,9 +32,9 @@ public class UserController {
             return "pages/tourist/register";
         }
     }
-    @RequestMapping(value = "/login.cwll",method = RequestMethod.POST)
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String loginUser(User user1,ModelMap model,HttpSession session){
-        User user = userService.login(user1);
+        /*User user = userService.login(user1);
         if(null!=user){
             session.setAttribute("user",user);
             if(user.getIdentity()==0){
@@ -42,7 +42,7 @@ public class UserController {
             }else if(user.getIdentity()==1){
                 return "index";
             }
-        }
+        }*/
         return "index";
     }
 }

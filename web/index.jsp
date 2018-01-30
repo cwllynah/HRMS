@@ -18,7 +18,7 @@
     <script src="js/jquery-3.1.0.js"></script>
 </head>
 <body background="images/a0129.jpg">
-    <form action="login.cwll" method="post" style="margin:200px 0px 0px 400px;borderradius:10px;border:1px solid #3e8f3e;width: 400px;padding:10px;
+    <form action="login" method="post" style="margin:200px 0px 0px 400px;borderradius:10px;border:1px solid #3e8f3e;width: 400px;padding:10px;
 background-color:#31b0d5" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="firstname" class="col-sm-3 control-label"> 用户名：</label>

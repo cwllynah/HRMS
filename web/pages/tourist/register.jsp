@@ -119,7 +119,7 @@
 </head>
 <body background="images/a0129.jpg">
 <div class="container">
-    <form style="padding: 40px 10px" action="register.cwll" onsubmit="return check()" method="post"  class="form-horizontal" role="form">
+    <form style="padding: 40px 10px" action="register" onsubmit="return check()" method="post"  class="form-horizontal" role="form">
         <div class="form-group">
             <label for="name" class="col-sm-2 control-label">姓名：</label>
             <div class="col-sm-10">

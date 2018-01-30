@@ -3,32 +3,148 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cwll.dao.ResumeMapper">
+    <resultMap id="resumeResult" type="com.cwll.model.Resume">
+        <id property="id" column="r_id"/>
+        <result property="experience" column="experience"/>
+        <result property="education" column="education"/>
+        <result property="school" column="school"/>
+        <result property="content" column="content"/>
+        <result property="specialty" column="specialty"/>
+        <result property="state" column="r_state"/>
+        <result property="interview" column="interview"/>
+        <result property="createtime" column="r_createTime"/>
 
-    <insert id="addResume">
-
-    </insert>
-    <insert id="addRecruitToResume">
-
-    </insert>
-    <update id="updateResumeStateById">
-
+        <!--<association property="job"  column="job" javaType="com.cwll.model.Post" >
+        <id property="pid" column="p_id"/>
+        <result property="pname" column="pname"/>
+        &lt;!&ndash;<result property="deptid" column="deptid"/>&ndash;&gt;
+        <result property="describe" column="describe"/>
+        <result property="createtime" column="p_createTime"/>
+    </association>-->
+    <association property="userid"  column="userid" javaType="com.cwll.model.User" >
+        <id property="id" column="u_id"/>
+        <result property="name" column="u_name"/>
+        <!--<result property="deptid" column="deptid"/>-->
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="createtime" column="u_createTime"/>
+    </association>
+</resultMap>
+<select id="findResumeById" parameterType="int"  resultMap="resumeResult">
+        SELECT
+        res.id r_id,res.EXPERIENCE,res.EDUCATION,res.SCHOOL,res.CONTENT,res.SPECIALTY,res.STATE r_state,res.INTERVIEW,res.CREATETIME r_createTime,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        u.ID u_id,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM resume res
+        LEFT JOIN USERS u ON res.userId=u.id
+        LEFT JOIN post p ON res.job=p.pID
+        WHERE res.ID=#{resumeId}
+    </select>
+    <update id="updateResume" parameterType="com.cwll.model.Resume">
+        UPDATE RESUME SET
+        <trim  suffixOverrides=",">
+            <if test="job!=null">
+                JOB=#{job.pid},
+            </if>
+            <if test="experience!=null">
+                experience=#{experience},
+            </if>
+            <if test="education!=null">
+                education=#{education},
+            </if>
+            <if test="school!=null">
+                school=#{school},
+            </if>
+            <if test="content!=null">
+                content=#{content},
+            </if>
+            <if test="specialty!=null">
+                specialty=#{specialty},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="userid!=null">
+                userid=#{userid.id},
+            </if>
+            <if test="recruitid!=null">
+                recruitid=#{recruitid.id},
+            </if>
+            <if test="interview!=null">
+                interview=#{interview.id},
+            </if>
+            <if test="createtime!=null">
+                createtime=#{createtime}
+            </if>
+        </trim>
+        WHERE id=#{id}
     </update>
-    <update id="updateResume">
+    <select id="findResumes" parameterType="int"  resultMap="resumeResult">
+        SELECT
+        res.id r_id,res.EXPERIENCE,res.EDUCATION,res.SCHOOL,res.CONTENT,res.SPECIALTY,res.STATE r_state,res.INTERVIEW,res.CREATETIME r_createTime,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        u.ID u_id,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM resume res
+        LEFT JOIN USERS u ON res.userId=u.id
+        LEFT JOIN post p ON res.job=p.pID
+        WHERE u.id=#{userId}
+    </select>
+    <select id="finDeliverydResumes" parameterType="int"  resultMap="resumeResult">
+        SELECT
+        res.id r_id,res.EXPERIENCE,res.EDUCATION,res.SCHOOL,res.CONTENT,res.SPECIALTY,res.STATE r_state,res.INTERVIEW,res.CREATETIME r_createTime,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        u.ID u_id,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM resume res
+        LEFT JOIN USERS u ON res.userId=u.id
+        LEFT JOIN post p ON res.job=p.pID
+        WHERE u.id=#{userId} AND res.RECRUITID IS NOT NULL
+        AND res.STATE>0
+    </select>
 
+    <insert id="addResume" parameterType="com.cwll.model.Resume">
+        INSERT INTO RESUME
+        (ID,JOB,EXPERIENCE,EDUCATION,SCHOOL,CONTENT,SPECIALTY,STATE,USERID,CREATETIME)
+        VALUES (SEQ_ID.nextval,#{job.pid},#{experience},#{education},#{school},#{content},#{specialty},#{state},#{userid.id},#{createtime})
+    </insert>
+    <select id="findResumeByRecruitId" parameterType="int" resultMap="resumeResult">
+        SELECT
+        res.id r_id,res.EXPERIENCE,res.EDUCATION,res.SCHOOL,res.CONTENT,res.SPECIALTY,res.STATE r_state,res.INTERVIEW,res.CREATETIME r_createTime,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        u.ID u_id,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM resume res
+        LEFT JOIN USERS u ON res.userId=u.id
+        LEFT JOIN post p ON res.job=p.pID
+        WHERE res.RECRUITID=#{recruitId}
+    </select>
+    <!--selectResume(int recruitId, int state, int userId);-->
+    <select id="selectResume" parameterType="com.cwll.model.Resume" resultType="com.cwll.model.Resume">
+        SELECT ID,CREATETIME,EXPERIENCE,EDUCATION,SCHOOL,CONTENT,SPECIALTY
+        FROM RESUME
+        WHERE  STATE=#{state} AND USERID=#{userid.id}
+    </select>
+    <update id="addRecruitToResume" parameterType="com.cwll.model.Resume">
+        UPDATE RESUME SET RECRUITID=#{recruitid.id} WHERE ID=#{id}
     </update>
-    <select id="findResumeByRecruitId" resultType="com.cwll.model.Resume">
 
-    </select>
-    <select id="selectResume" resultType="com.cwll.model.Resume">
+    <update id="employment" parameterType="int" >
+        UPDATE RESUME SET STATE=4 WHERE ID=#{resumeId}
+    </update>
 
+    <select id="adminShowInvitationResume" parameterType="int" resultMap="resumeResult">
+        SELECT
+        res.id r_id,res.EXPERIENCE,res.EDUCATION,res.SCHOOL,res.CONTENT,res.SPECIALTY,res.STATE r_state,res.INTERVIEW,res.CREATETIME r_createTime,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        u.ID u_id,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM resume res
+        LEFT JOIN USERS u ON res.userId=u.id
+        LEFT JOIN post p ON res.job=p.pID
+        WHERE res.STATE=#{state}
     </select>
-    <select id="finDeliverydResumes" resultType="com.cwll.model.Resume">
-
-    </select>
-    <select id="adminShowInvitationResume" resultType="com.cwll.model.Resume">
-
-    </select>
-    <select id="findResumeById" resultType="com.cwll.model.Resume">
-
-    </select>
+    <update id="updateResumeStateById" parameterType="com.cwll.model.Resume">
+        UPDATE RESUME
+        SET STATE=#{state}
+        WHERE ID=#{id}
+    </update>
 </mapper>
