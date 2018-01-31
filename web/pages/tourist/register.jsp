@@ -58,7 +58,7 @@
                 sp_check_phone.html("");
                 return true;
             }
-            sp_check_phone.html("用户名输入不正确");
+            sp_check_phone.html("电话输入不正确");
             return false;
         }
         function check_age() {
@@ -83,7 +83,7 @@
                 sp_check_email.html("");
                 return true;
             }
-            sp_check_email.html("用户名输入不正确");
+            sp_check_email.html("邮箱输入不正确");
             return false;
         }
         function check_password() {

@@ -17,9 +17,9 @@
     <link href="css/touregister.css" rel="stylesheet">
     <script src="js/jquery-3.1.0.js"></script>
 </head>
-<body background="images/a0129.jpg">
+<body background="images/touregister.jpg">
     <form action="login" method="post" style="margin:200px 0px 0px 400px;borderradius:10px;border:1px solid #3e8f3e;width: 400px;padding:10px;
-background-color:#31b0d5" class="form-horizontal" role="form">
+background-color:yellowgreen" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="firstname" class="col-sm-3 control-label"> 用户名：</label>
             <div class="col-sm-9">
@@ -50,7 +50,7 @@ background-color:#31b0d5" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="eee" class="col-sm-1 control-label"> </label>
             <div class="col-sm-11">
-                <a style="color: red">忘记密码?</a><a id="eee" style="color:red;margin-left: 140px" href="pages/tourist/register.jsp">注册</a>
+                <a style="color: chocolate">忘记密码?</a><a id="eee" style="color:chocolate;margin-left: 200px" href="pages/tourist/register.jsp">注册</a>
             </div>
         </div>
     </form>

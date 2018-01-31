@@ -19,8 +19,10 @@ import java.util.List;
  */
 @Controller
 public class DeptController {
+
     @Resource
     private DeptService deptService;
+
     @RequestMapping(value = "/listDepts" ,method = RequestMethod.POST)
     public void getDepts(HttpServletResponse response){
         List<Dept> depts = deptService.listDepts();

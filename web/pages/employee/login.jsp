@@ -15,7 +15,7 @@
     <base href="<%=basePath%>"/>
     <title></title>
 </head>
-<body background="images/a0129.jpg">
+<body background="images/touregister.jpg">
     员工登录界面
 </body>
 </html>
