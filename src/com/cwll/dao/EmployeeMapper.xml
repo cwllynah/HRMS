@@ -3,5 +3,115 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cwll.dao.EmployeeMapper">
+    <resultMap id="employeeMapper" type="com.cwll.model.Employee">
+        <id property="id" column="id"/>
+        <result property="no" column="no"/>
+        <result property="state" column="state"/>
+        <result property="createtime" column="createtime"/>
+        <!--<association property="postid" column="postid" javaType="com.cwll.model.Post">
+            <id property="pid" column="p_id"/>
+            <result property="pname" column="pname"/>
+            <result property="describe" column="describe"/>
+            <result property="createtime" column="p_createTime"/>-->
+            <!--<association property="deptid" column="deptid" javaType="com.cwll.model.Dept">-->
+               <!-- <id property="id" column="d_id"/>
+                <result property="name" column="d_name"/>
+                <result property="createtime" column="d_createtime"/>
+            </association>
+        </association>-->
+        <association property="userid" column="userid" javaType="com.cwll.model.User">
+            <id property="id" column="u_id"/>
+            <result property="name" column="u_name"/>
+            <result property="sex" column="sex"/>
+            <result property="age" column="age"/>
+            <result property="phone" column="phone"/>
+            <result property="email" column="email"/>
+            <result property="identity" column="IDENTITY"/>
+            <result property="createtime" column="u_createTime"/>
+        </association>
+        <!--<association property="trainid" column="trainid" javaType="com.cwll.model.Train">
+            <id property="tid" column="tid" />
+            <result property="tname" column="tname"/>
+            <result property="begintime" column="begintime"/>
+            <result property="endtime" column="endtime"/>
+            <result property="content" column="content"/>
+            <result property="state" column="t_state"/>
+        </association>-->
+    </resultMap>
+    <insert id="addEmployee" parameterType="com.cwll.model.Resume">
+        INSERT INTO EMPLOYEE(ID,POSTID,STATE,USERID,CREATETIME)
+        VALUES (SEQ_ID.nextval,#{job.pid},#{state},#{userid.id},#{createtime})
+    </insert>
+    <select id="showEmployee" resultMap="employeeMapper" >
+        SELECT e.ID,e.no,e.STATE,e.CREATETIME,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM EMPLOYEE e
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        INNER JOIN DEPT d ON d.ID=p.DEPTID
+    </select>
+    <select id="showEmployeeById" resultMap="employeeMapper">
+        SELECT e.ID,e.no,e.STATE,e.CREATETIME,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM EMPLOYEE e
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        INNER JOIN DEPT d ON d.ID=p.DEPTID
+        WHERE e.id=#{employeeId}
+    </select>
+    <update id="updateEmployeeStateById" parameterType="com.cwll.model.Employee">
+        UPDATE EMPLOYEE SET STATE=#{state}
+        WHERE id=#{id}
+    </update>
+    <update id="updateEmployeePostById" parameterType="com.cwll.model.Employee">
+        UPDATE EMPLOYEE SET POSTID=#{postid.pid}
+        WHERE id=#{id}
+    </update>
 
+    <select id="listEmployeeByDeptId" parameterType="int" resultMap="employeeMapper">
+        SELECT e.ID,e.no,e.STATE,e.CREATETIME,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM EMPLOYEE e
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        INNER JOIN DEPT d ON d.ID=p.DEPTID
+        WHERE d.id=#{deptId}
+    </select>
+    <update id="arrangeTrain" parameterType="com.cwll.model.Employee">
+        UPDATE EMPLOYEE SET TRAINID=#{trainid.tid} WHERE id=#{id}
+    </update>
+    <select id="findEmployeeByUser" parameterType="com.cwll.model.User" resultMap="employeeMapper">
+        SELECT e.ID,e.no,e.STATE,e.CREATETIME,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.IDENTITY,u.CREATETIME u_createtime
+        FROM EMPLOYEE e
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        LEFT JOIN DEPT d ON d.ID=p.DEPTID
+        WHERE e.USERID=#{id}
+    </select>
+    <select id="showEmployeeByTrainId" resultMap="employeeMapper" parameterType="int">
+        SELECT e.ID,e.no,e.STATE,e.CREATETIME,
+        t.TID,t.TNAME,t.BEGINTIME,t.ENDTIME,t.CONTENT,t.STATE t_state,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
+        FROM EMPLOYEE e
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        LEFT JOIN DEPT d ON d.ID=p.DEPTID
+        INNER JOIN TRAIN t ON t.TID=e.TRAINID
+        WHERE t.TID=#{trainId}
+    </select>
+    <update id="cancelTrain" parameterType="int">
+        UPDATE EMPLOYEE SET TRAINID=NULL
+        WHERE ID=#{employeeId}
+    </update>
 </mapper>
