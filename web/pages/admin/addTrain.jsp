@@ -16,6 +16,6 @@
     <title></title>
 </head>
 <body>
-
+增加培训员工
 </body>
 </html>

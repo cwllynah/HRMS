@@ -13,7 +13,7 @@
 <html>
 <head>
     <base href="<%=basePath%>"/>
-    <title></title>
+    <title>招聘发布</title>
 </head>
 <body>
 
