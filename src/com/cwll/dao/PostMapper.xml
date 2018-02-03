@@ -3,5 +3,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cwll.dao.PostMapper">
-
+    <resultMap id="postMap" type="com.cwll.model.Post">
+        <id property="pid" column="pid"/>
+        <result column="pname" property="pname"/>
+        <result property="describe" column="DESCRIBE"/>
+        <result column="p_createtime" property="createtime"/>
+        <association property="deptid" column="deptid" javaType="com.cwll.model.Dept">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="createtime" column="d_createtime"/>
+        </association>
+    </resultMap>
+    <select id="findPostByDeptId" resultType="com.cwll.model.Post" parameterType="int">
+        SELECT * FROM POST WHERE DEPTID=#{deptid}
+    </select>
+    <insert id="addPost" parameterType="com.cwll.model.Post">
+        INSERT INTO POST
+        VALUES (SEQ_ID.nextval,#{pname},#{deptid.id},#{describe},#{createtime})
+    </insert>
+    <delete id="deleteDeptById" parameterType="int">
+        DELETE FROM POST WHERE PID=#{postId}
+    </delete>
+    <select id="selectPostById" resultMap="postMap" parameterType="int">
+        SELECT p.PID,p.PNAME,p.CREATETIME p_createtime,p.DESCRIBE,
+        d.ID,d.CREATETIME d_createtime,d.NAME
+        FROM POST p
+        LEFT JOIN DEPT d ON d.ID=p.DEPTID
+        WHERE p.PID=#{postId}
+    </select>
+    <update id="updatePostById" parameterType="com.cwll.model.Post">
+        UPDATE POST SET
+        <trim suffixOverrides=",">
+            <if test="pname!=null">
+                PNAME=#{pname},
+            </if>
+            <if test="deptid!=null">
+                DEPTID=#{deptid.id},
+            </if>
+            <if test="describe!=null">
+                DESCRIBE=#{describe},
+            </if>
+            <if test="createtime">
+                CREATETIME={createtime}
+            </if>
+        </trim>
+        WHERE pid=#{pid}
+    </update>
 </mapper>
