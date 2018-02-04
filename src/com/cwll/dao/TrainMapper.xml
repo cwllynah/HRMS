@@ -3,5 +3,98 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cwll.dao.TrainMapper">
+    <resultMap id="TrainMap" type="com.cwll.model.Train">
+        <id property="tid" column="tid"/>
+        <result property="begintime" column="begintime"/>
+        <result column="endtime" property="endtime"/>
+        <result property="tname" column="tname"/>
+        <result property="content" column="content"/>
+        <result property="state" column="t_state"/>
+        <association property="employeeid" column="employeeid" javaType="com.cwll.model.Employee">
+            <id property="id" column="id"/>
+            <result property="no" column="no"/>
+            <result property="state" column="state"/>
+            <result property="createtime" column="createtime"/>
+            <!--<association property="pid" column="pid" javaType="com.cwll.model.Post">
+                <id property="pid" column="p_id"/>
+                <result property="pname" column="pname"/>
+                <result property="describe" column="describe"/>
+                <result property="createtime" column="p_createTime"/>
+                <association property="deptid" column="deptid" javaType="com.cwll.model.Dept">
+                    <id property="id" column="d_id"/>
+                    <result property="name" column="d_name"/>
+                    <result property="createtime" column="d_createtime"/>
+                </association>
+            </association>
+            <association property="userid" column="userid" javaType="com.cwll.model.User">
+                <id property="id" column="u_id"/>
+                <result property="name" column="u_name"/>
+                <result property="sex" column="sex"/>
+                <result property="age" column="age"/>
+                <result property="phone" column="phone"/>
+                <result property="email" column="email"/>
+                <result property="createtime" column="u_createTime"/>
+            </association>-->
+        </association>
+    </resultMap>
+    <select id="findTrains" resultMap="TrainMap">
+        SELECT t.tid,t.TNAME,t.BEGINTIME,t.ENDTIME,t.CONTENT,t.STATE t_state,
+        e.ID,e.no,e.STATE,e.CREATETIME,
+        p.pID p_id,p.PNAME,p.DESCRIBE ,p.CREATETIME p_createTime,
+        d.ID d_id,d.NAME d_name,d.CREATETIME d_createtime,
+        u.ID u_id,u.NAME u_name,u.SEX,u.AGE,u.PHONE,u.EMAIL,u.CREATETIME u_createtime
 
+        FROM TRAIN t
+        LEFT JOIN EMPLOYEE e ON t.EMPLOYEEID=e.ID
+        LEFT JOIN USERS u ON u.ID=e.USERID
+        LEFT JOIN POST p on p.PID=e.POSTID
+        LEFT JOIN DEPT d ON d.ID=p.DEPTID
+        ORDER BY t.ENDTIME DESC
+    </select>
+    <insert id="addTrain" parameterType="com.cwll.model.Train">
+        INSERT INTO TRAIN
+        <trim prefix="(tid," suffix=")" suffixOverrides=",">
+            <if test="tname!=null">
+                tname,
+            </if>
+            <if test="begintime!=null">
+                begintime,
+            </if>
+            <if test="endtime!=null">
+                endtime,
+            </if>
+            <if test="content!=null">
+                content,
+            </if>
+            <if test="state!=null">
+                state,
+            </if>
+            <if test="employeeid!=null">
+                employeeid
+            </if>
+        </trim>
+        <trim prefix="values(SEQ_ID.nextval," suffix=")" suffixOverrides=",">
+            <if test="tname!=null">
+                #{tname},
+            </if>
+            <if test="begintime!=null">
+                #{begintime},
+            </if>
+            <if test="endtime!=null">
+                #{endtime},
+            </if>
+            <if test="content!=null">
+                #{content},
+            </if>
+            <if test="state!=null">
+                ${state},
+            </if>
+            <if test="employeeid!=null">
+                #{employeeid.id}
+            </if>
+        </trim>
+    </insert>
+    <!--<update id="arrangeTrain" parameterType="com.cwll.model.Train">-->
+    <!--UPDATE TRAIN SET EMPLOYEEID=#{employeeId.id} WHERE TID=#{tid}-->
+    <!--</update>-->
 </mapper>

@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by cwll on 2018/1/26.
  */
 public class Post implements Serializable {
+
     private int pid;
     private String pname;
     private Dept deptid;
